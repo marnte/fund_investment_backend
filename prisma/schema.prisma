@@ -1,0 +1,43 @@
+//Prisma is picked as the db mediator to avoid mistakes in the database creation or edit
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model Investor {
+  id                  String      @id   @default(uuid())
+  name                String
+  investor_type       String 
+  email               String   @unique
+  created_at           DateTime @default(now())
+
+  investments Investment[]
+}
+
+model Fund {
+  id                String      @id     @default(uuid())
+  name              String
+  vintage_year      Int
+  target_size_usd   Float 
+  status            String
+  created_at         DateTime @default(now())
+
+  investments Investment[]
+}
+
+model Investment {
+  id                  String      @id   @default(uuid())
+  investor_id         String
+  fund_id             String
+  amount_usd          Float
+  investment_date     DateTime @default(now())
+
+  investor   Investor @relation(fields: [investor_id], references: [id])
+  fund       Fund     @relation(fields: [fund_id], references: [id])  
+}
