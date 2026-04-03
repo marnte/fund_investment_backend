@@ -154,3 +154,85 @@ To check tables while running:
 
 #### Designed for clarity and testability
 #### Unit tests focus on controller-level logic
+
+
+## Assumptions
+All columns in the db should be not null hence why the initial validation of non-null fields
+
+## AI use 
+Copilot to write the code 
+ChatGPT to help generate the unit tests
+
+
+
+## Further scripts
+
+### Update the fund details
+Update the id 
+
+```bash
+curl -X PUT http://localhost:3000/funds \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "id",
+    "name": "Titanbay Growth Fund I",
+    "vintage_year": 2024,
+    "target_size_usd": 300000000.00,
+    "status": "Investing"
+  }'
+  ```
+
+
+### Retrieve the fund's details providing the id 
+
+```bash
+curl -X GET http://localhost:3000/funds/$id
+```
+
+
+### Add investor 
+
+```bash
+
+curl -X POST http://localhost:3000/investors \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "CalPERS",
+    "investor_type": "Institution",
+    "email": "privateequity@calpers.ca.gov"
+  }'
+
+```
+
+
+### Retrieve investors
+
+```bash
+curl -X GET http://localhost:3000/investors
+```
+
+
+
+### Create investment 
+
+```bash 
+curl -X POST http://localhost:3000/funds/$id/investments \
+  -H "Content-Type: application/json" \
+  -d '{
+    "investor_id": "880e8400-e29b-41d4-a716-446655440003",
+    "amount_usd": 75000000.00,
+    "investment_date": "2024-09-22"
+  }'
+```
+
+
+### Retrieve investment
+
+
+```bash
+
+curl -X GET http://localhost:3000/funds/$id/investments
+
+```
+
+
