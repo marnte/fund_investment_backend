@@ -34,39 +34,52 @@ A backend service for managing private market funds and investor commitments bui
 
 ### 1. Install dependencies
 
+```bash
 npm install
+```
 
 ### 2. Start PostgreSQL with Docker
 
+```bash
 docker run --name postgres-db \
   -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres \
   -e POSTGRES_DB=titanbay \
   -p 5433:5432 \
   -d postgres
+```
 
 #### check it is running 
 
+```bash
 docker ps
+```
 
 ### 3. Environment variables
 
 - create a .env file 
 
+```bash
 DATABASE_URL="postgresql://postgres:postgres@localhost:5433/titanbay"
-
+```
 
 ### 4. Run database migrations
 
+```bash
 npx prisma migrate dev --name init
+```
 
 ### 5. Generate Prisma Client
 
+```bash
 npx prisma generate
+```
 
 ### 6. Start the server
 
+```bash
 npx ts-node src/server.ts
+```
 
 #### API will run at
 
@@ -75,7 +88,9 @@ http://localhost:3000
 
 ## Testing
 
+```bash
 npm test
+```
 
 #### Tests cover:
 - Controller validation
@@ -87,9 +102,15 @@ npm test
 
 ### Get all funds
 
+```bash
+
 curl -X GET http://localhost:3000/funds/
 
+```
+
 ### Create a fund
+
+```bash
 
 curl -X POST http://localhost:3000/funds \
   -H "Content-Type: application/json" \
@@ -100,6 +121,7 @@ curl -X POST http://localhost:3000/funds \
     "status": "Fundraising"
   }'
 
+```
 
 ## Architecture 
 
@@ -123,7 +145,12 @@ This structure improves maintainability, scalability, and testability.
 ## Notes
 
 #### Schema defined in prisma/schema.prisma
-    - To check tables while running:
-        - npx prisma studio
+
+To check tables while running:
+
+```bash
+    - npx prisma studio
+```
+
 #### Designed for clarity and testability
 #### Unit tests focus on controller-level logic
