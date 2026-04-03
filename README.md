@@ -1,65 +1,129 @@
-# fund_investment_backend
-A backend service for managing private market funds and investor commitments.
+**Fund Investment Backend**
 
-How To Run the API:
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?logo=typescript)
+![Prisma](https://img.shields.io/badge/ORM-Prisma-2D3748?logo=prisma)
+![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-336791?logo=postgresql)
+![Docker](https://img.shields.io/badge/Container-Docker-2496ED?logo=docker)
 
-- Create the database:
+A backend service for managing private market funds and investor commitments built with Node.js, Express, TypeScript, Prisma, and PostgreSQL.
 
-    - npm install - to install all necessary libraries
+---
 
-    - Prerequisites: Docker | in order to be run in any environment in the same way - Have Docker running - docker ps
+## Features
 
-    - In .env have : DATABASE_URL="postgresql://postgres:postgres@localhost:5433/titanbay" for Prisma connection
+- Create and manage investment funds
+- Allow investments and track investor commitments
+- Add and track investors
+- PostgreSQL database integration via Prisma
+- Layered architecture (Routes → Controllers → Services)
+- Unit testing for controller logic
+- Docker-based database setup
 
-    - Add to the command line - pick a port that you are not using 5433 for example: 
-        docker run --name postgres-db\
-            -e POSTGRES_USER=postgres\
-            -e POSTGRES_PASSWORD=postgres\
-            -e POSTGRES_DB=titanbay\
-            -p 5433:5432\
-            -d postgres
-    
-    - Tables are outlined in prisma/schema.prisma
+---
 
-    - Create tables in PostgreSQL
-        - npx prisma migrate dev --name init
+## Requirements
 
-    - Libraries for Prisma:
-        - npm install prisma @types/pg --save-dev
-        - npm install @prisma/client @prisma/adapter-pg pg dotenv
+- Node.js (>= 18)
+- npm or yarn
+- Docker
 
-    - Generate Prisma Client:
-        - npx prisma generate
+---
 
-    - Run the server:
-        - npx ts-node src/server.ts
+## Setup Instructions
 
-    - Make the requests through the terminal:
-        - Example: 
-            - curl -X GET http://localhost:3000/funds/
+### 1. Install dependencies
 
-    - To view db tables:
+npm install
+
+### 2. Start PostgreSQL with Docker
+
+docker run --name postgres-db \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=titanbay \
+  -p 5433:5432 \
+  -d postgres
+
+#### check it is running 
+
+docker ps
+
+### 3. Environment variables
+
+- create a .env file 
+
+DATABASE_URL="postgresql://postgres:postgres@localhost:5433/titanbay"
+
+
+### 4. Run database migrations
+
+npx prisma migrate dev --name init
+
+### 5. Generate Prisma Client
+
+npx prisma generate
+
+### 6. Start the server
+
+npx ts-node src/server.ts
+
+#### API will run at
+
+http://localhost:3000
+
+
+## Testing
+
+npm test
+
+#### Tests cover:
+- Controller validation
+- Edge cases
+- Error handling
+
+
+## API Usage Examples : from terminal 
+
+### Get all funds
+
+curl -X GET http://localhost:3000/funds/
+
+### Create a fund
+
+curl -X POST http://localhost:3000/funds \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Titanbay Growth Fund II",
+    "vintage_year": 2025,
+    "target_size_usd": 500000000,
+    "status": "Fundraising"
+  }'
+
+
+## Architecture 
+
+The project follows a layered architecture:
+    - Routes → API endpoints
+    - Controllers → Request validation and responses
+    - Services → Business logic and database operations via Prisma
+This structure improves maintainability, scalability, and testability.
+
+
+## Future Improvements
+
+- Future Improvements
+- Add integration tests with test database
+- Introduce Docker Compose (one-command setup)
+- Add validation layer (Zod or Joi)
+- Improve centralized error handling
+- Add CI pipeline (GitHub Actions)
+- Improve logging and monitoring
+
+## Notes
+
+#### Schema defined in prisma/schema.prisma
+    - To check tables while running:
         - npx prisma studio
-
-    - To run unit tests:
-        - run the server first 
-        - npm test
-
-    - To check db connection in case of errors:
-        - docker exec -it postgres-db psql -U postgres -d titanbay
-
-
-# Assumptions and Solution
-All comuns should be non-null as they contain important information
-The solution is split in route - to route the request to the right controller - which validates the data and sends the request to the service - which uses prisma to make the changes or return data from the database 
-
-The unit tests are done on the controllers to understand that the edge cases are working
-
-
-    
-
-
-
-
-    
-
+#### Designed for clarity and testability
+#### Unit tests focus on controller-level logic
