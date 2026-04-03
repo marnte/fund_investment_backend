@@ -12,20 +12,20 @@ export const createInvestment = async (req: Request, res: Response) => {
 
     if (!fund_id || !investor_id || amount_usd == null || !investment_date) {
       return res.status(400).json({
-        message: "Missing required fields"
+        error: "Missing required fields"
       });
     }
 
     if (amount_usd <= 0) {
       return res.status(400).json({ 
-        message: 'Amount must be greater than 0' 
+        error: 'Amount must be greater than 0' 
       })
     }
 
     const date = new Date(investment_date)
     if (isNaN(date.getTime())) {
       return res.status(400).json({ 
-          message: 'Invalid investment date' 
+          error: 'Invalid investment date' 
         })
     }
 
@@ -41,7 +41,6 @@ export const createInvestment = async (req: Request, res: Response) => {
 
     return res.status(201).json(investment)
   } catch (error: any) {
-    console.log("Error: Investment could not be made")
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }

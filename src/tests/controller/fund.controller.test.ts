@@ -181,45 +181,113 @@ describe("Fund Controller", () => {
   // ======================
 
   describe("updateFund", () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
 
-    it("should update fund", async () => {
+    it("should update fund successfully", async () => {
       const req: any = {
-        params: { id: "1" },
-        body: { data: { name: "Updated" } },
-      }
+        body: { id: "1", name: "Updated" },
+      };
 
-      const res = mockResponse()
+      const res = mockResponse();
 
-      jest.spyOn(fundService, "update").mockResolvedValue({ id: 1 } as any)
+      jest.spyOn(fundService, "update").mockResolvedValue({
+        id: "1",
+        name: "Updated",
+      } as any);
 
-      await updateFund(req, res)
+      await updateFund(req, res);
 
-      expect(res.json).toHaveBeenCalledWith({ id: 1 })
-    })
+      expect(fundService.update).toHaveBeenCalledWith("1", {
+        name: "Updated",
+      });
 
-    it("should return 400 if no id", async () => {
-      const req: any = { params: {}, body: {} }
-      const res = mockResponse()
+      expect(fundService.update).toHaveBeenCalledTimes(1);
 
-      await updateFund(req, res)
+      expect(res.status).toHaveBeenCalledWith(200);
 
-      expect(res.status).toHaveBeenCalledWith(400)
-    })
+      expect(res.json).toHaveBeenCalledWith({
+        data: {
+          id: "1",
+          name: "Updated",
+        },
+      });
+    });
+
+    it("should return 400 if id is missing", async () => {
+      const req: any = {
+        body: { name: "Updated" },
+      };
+
+      const res = mockResponse();
+
+      await updateFund(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+
+      expect(res.json).toHaveBeenCalledWith({
+        error: "No id specified",
+      });
+    });
+
+    it("should return 400 if no fields to update", async () => {
+      const req: any = {
+        body: { id: "1" },
+      };
+
+      const res = mockResponse();
+
+      await updateFund(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+
+      expect(res.json).toHaveBeenCalledWith({
+        error: "No fields to update",
+      });
+    });
 
     it("should return 404 if fund not found", async () => {
       const req: any = {
-        params: { id: "1" },
-        body: { data: {} },
-      }
+        body: { id: "4", name: "Updated" },
+      };
 
-      const res = mockResponse()
+      const res = mockResponse();
 
-      jest.spyOn(fundService, "update").mockRejectedValue(new Error("Not found"))
+      jest.spyOn(fundService, "update").mockRejectedValue(
+        Object.assign(new Error("Fund not found"), {
+          statusCode: 404,
+        })
+      );
 
-      await updateFund(req, res)
+      await updateFund(req, res);
 
-      expect(res.status).toHaveBeenCalledWith(500)
-    })
-  })
+      expect(res.status).toHaveBeenCalledWith(404);
+
+      expect(res.json).toHaveBeenCalledWith({
+        error: "Fund not found",
+      });
+    });
+
+    it("should return 500 for unexpected errors", async () => {
+      const req: any = {
+        body: { id: "1", name: "Updated" },
+      };
+
+      const res = mockResponse();
+
+      jest.spyOn(fundService, "update").mockRejectedValue(
+        new Error("Unexpected error")
+      );
+
+      await updateFund(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+
+      expect(res.json).toHaveBeenCalledWith({
+        error: "Unexpected error",
+      });
+    });
+  });
 
 })

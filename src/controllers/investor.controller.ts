@@ -39,7 +39,6 @@ export const createInvestor = async (req: Request, res: Response) => {
 
     return res.status(201).json(investor)
   } catch (error: any) {
-    console.log("Could not create investor")
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }
@@ -49,9 +48,10 @@ export const createInvestor = async (req: Request, res: Response) => {
 export const getInvestors = async (req: Request, res: Response) => {
   try {
     const investors = await investorService.getAll()
+
     return res.status(200).json(investors)
+    
   } catch (error: any) {
-    console.log("Could not return investors")
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }

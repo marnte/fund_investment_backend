@@ -35,7 +35,7 @@ describe('Investment Controller', () => {
 
       expect(res.status).toHaveBeenCalledWith(400)
       expect(res.json).toHaveBeenCalledWith({
-        message: 'Missing required fields',
+        error: 'Missing required fields',
       })
     })
 
@@ -51,7 +51,7 @@ describe('Investment Controller', () => {
 
       expect(res.status).toHaveBeenCalledWith(400)
       expect(res.json).toHaveBeenCalledWith({
-        message: 'Amount must be greater than 0',
+        error: 'Amount must be greater than 0',
       })
     })
 
@@ -67,7 +67,7 @@ describe('Investment Controller', () => {
 
       expect(res.status).toHaveBeenCalledWith(400)
       expect(res.json).toHaveBeenCalledWith({
-        message: 'Invalid investment date',
+        error: 'Invalid investment date',
       })
     })
 

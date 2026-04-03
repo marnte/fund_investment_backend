@@ -45,9 +45,10 @@ export const createFund = async (req: Request, res: Response) => {
 export const getFunds = async (req: Request, res: Response) => {
   try {
     const funds = await fundService.getAll()
+
     return res.status(200).json(funds)
+    
   } catch (error:any) {
-    console.log("Failed to get funds:", error)
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }
@@ -73,7 +74,6 @@ export const getFundById = async (req: Request, res: Response) => {
     return res.status(200).json(fund)
 
   } catch (error: any) {
-    console.log("Failed to get fund:", error)
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }
@@ -82,25 +82,24 @@ export const getFundById = async (req: Request, res: Response) => {
 // Checks a fund by its id and updates the columns passed as arguments
 export const updateFund = async (req: Request, res: Response) => {
   try {
+    const { id, ...data } = req.body || {};
 
-    const {id} = req.params
-    const { data } = req.body || {};
-
-    const fundId = id as string
-
-    if (!fundId){
-      return res.status(400).json({ error: 'No id specified' })
+    if (!id) {
+      return res.status(400).json({ error: "No id specified" });
     }
 
-    const fund = await fundService.update(fundId, data)
-
-    if (!fund) {
-        return res.status(404).json({ error: 'Fund not found' })
+    if (!data || Object.keys(data).length === 0) {
+      return res.status(400).json({ error: "No fields to update" });
     }
 
-    return res.status(200).json(fund)
-  } catch (error:any) {
-    console.log("Failed to update fund:", error)
-    return res.status(error.statusCode || 500).json({ error: error.message })
+    const fund = await fundService.update(id, data);
+
+    return res.status(200).json({
+      data: fund,
+    });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      error: error.message || "Internal server error",
+    });
   }
-}
+};

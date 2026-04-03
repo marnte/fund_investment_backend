@@ -39,15 +39,16 @@ export const getById = async (id: string) => {
 
 //Returns the updated row in the db (the updated fund)
 export const update = async (id: string, data: any) => {
-  try {
+    const existingFund = await prisma.fund.findUnique({
+      where: { id },
+    });
+
+    if (!existingFund) {
+      throw Object.assign(new Error('Fund not found'), { statusCode: 404 })
+    }
+    
     return await prisma.fund.update({
       where: { id },
       data
     })
-  } catch (error: any) {
-    if (error.code === 'P2025') {
-      throw new Error('Fund not found')
-    }
-    throw error
-  }
 }
