@@ -41,9 +41,19 @@ How To Run the API:
     - To view db tables:
         - npx prisma studio
 
+    - To run unit tests:
+        - run the server first 
+        - npm test
+
     - To check db connection in case of errors:
         - docker exec -it postgres-db psql -U postgres -d titanbay
 
+
+# Assumptions and Solution
+All comuns should be non-null as they contain important information
+The solution is split in route - to route the request to the right controller - which validates the data and sends the request to the service - which uses prisma to make the changes or return data from the database 
+
+The unit tests are done on the controllers to understand that the edge cases are working
 
 
     

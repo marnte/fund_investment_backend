@@ -35,7 +35,7 @@ export const createFund = async (req: Request, res: Response) => {
 
     return res.status(201).json(fund);
   } catch (error:any) {
-    console.error("Failed to create fund:", error)
+    console.log("Failed to create fund:", error)
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 };
@@ -45,9 +45,9 @@ export const createFund = async (req: Request, res: Response) => {
 export const getFunds = async (req: Request, res: Response) => {
   try {
     const funds = await fundService.getAll()
-    return res.json(funds)
+    return res.status(200).json(funds)
   } catch (error:any) {
-    console.error("Failed to get funds:", error)
+    console.log("Failed to get funds:", error)
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }
@@ -70,10 +70,10 @@ export const getFundById = async (req: Request, res: Response) => {
         return res.status(404).json({ error: 'Fund not found' })
     }
 
-    return res.json(fund)
+    return res.status(200).json(fund)
 
   } catch (error: any) {
-    console.error("Failed to get fund:", error)
+    console.log("Failed to get fund:", error)
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }
@@ -98,9 +98,9 @@ export const updateFund = async (req: Request, res: Response) => {
         return res.status(404).json({ error: 'Fund not found' })
     }
 
-    return res.json(fund)
+    return res.status(200).json(fund)
   } catch (error:any) {
-    console.error("Failed to update fund:", error)
+    console.log("Failed to update fund:", error)
     return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }

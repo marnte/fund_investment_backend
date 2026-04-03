@@ -62,8 +62,8 @@ export const getInvestmentsByFund = async (req: Request, res: Response) => {
     }
     const investments = await investmentService.getByFundId(fundId)
 
-    res.json(investments)
+    return res.status(200).json(investments)
   } catch (error: any) {
-    res.status(error.statusCode || 500).json({ error: error.message })
+    return res.status(error.statusCode || 500).json({ error: error.message })
   }
 }
