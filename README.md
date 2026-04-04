@@ -149,7 +149,7 @@ This structure improves maintainability, scalability, and testability.
 To check tables while running:
 
 ```bash
-    - npx prisma studio
+  npx prisma studio
 ```
 
 #### Designed for clarity and testability
@@ -158,6 +158,15 @@ To check tables while running:
 
 ## Assumptions
 All columns in the db should be not null hence why the initial validation of non-null fields
+
+## Edge Cases
+- Not all fields specified in creation of elenents
+- Fields might be wrong like amount<0  
+- Id not specified 
+- No fields specified for fund update
+- More fields than required passed to the request for creation or update
+- Element with specified id doesn't exist
+
 
 ## AI use 
 Copilot to write the code 

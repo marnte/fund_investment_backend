@@ -82,17 +82,26 @@ export const getFundById = async (req: Request, res: Response) => {
 // Checks a fund by its id and updates the columns passed as arguments
 export const updateFund = async (req: Request, res: Response) => {
   try {
+    const ALLOWED_FIELDS = ["name", "vintage_year", "target_size_usd", "status"];
     const { id, ...data } = req.body || {};
 
     if (!id) {
       return res.status(400).json({ error: "No id specified" });
     }
 
+    const filteredData = Object.keys(data)
+      .filter((key) => ALLOWED_FIELDS.includes(key))
+      .reduce((obj: any, key) => {
+        obj[key] = data[key];
+        return obj;
+      }, {});
+
+
     if (!data || Object.keys(data).length === 0) {
       return res.status(400).json({ error: "No fields to update" });
     }
 
-    const fund = await fundService.update(id, data);
+    const fund = await fundService.update(id, filteredData);
 
     return res.status(200).json({
       data: fund,
