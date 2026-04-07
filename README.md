@@ -160,7 +160,7 @@ To check tables while running:
 All columns in the db should be not null hence why the initial validation of non-null fields
 
 ## Edge Cases
-- Not all fields specified in creation of elenents
+- Not all fields specified in creation of elements
 - Fields might be wrong like amount<0  
 - Id not specified 
 - No fields specified for fund update

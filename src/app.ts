@@ -11,4 +11,12 @@ app.use('/funds', fundRoutes)
 app.use('/investors', investorRoutes)
 app.use('/', investmentRoutes)
 
+
+//when the endpoint is not found
+app.use((req, res) => {
+  res.status(404).json({
+    message: "Route not found",
+  });
+});
+
 export default app
