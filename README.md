@@ -166,6 +166,7 @@ All columns in the db should be not null hence why the initial validation of non
 - No fields specified for fund update
 - More fields than required passed to the request for creation or update
 - Element with specified id doesn't exist
+- Route doesn't exist
 
 
 ## AI use 
